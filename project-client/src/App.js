@@ -1,11 +1,14 @@
 import React from 'react';
-import BodyWrapper from "./Components/BodyWrapper";
-import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import BodyWrapper from "./Components/Structure/BodyWrapper/BodyWrapper";
+import './App.scss';
 
 function App() {
   return (
     <div className="App">
-      <BodyWrapper/>
+      <Router>
+        <BodyWrapper />
+      </Router>
     </div>
   );
 }

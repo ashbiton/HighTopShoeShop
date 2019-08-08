@@ -1,0 +1,22 @@
+@import '../../../globals.scss';
+
+.icon-link {
+    border-radius: 50%;
+    border: $border-size solid $base-color;
+    padding: 14px;
+    display: inline-flex;
+    transition: all 0.27s ease-in-out;
+}
+
+.icon-link,
+.icon-link:hover,
+.icon-link:active {
+    text-decoration: none;
+    color: $base-color;
+}
+
+
+.icon-link:hover {
+    background-color: $base-color;
+    color: whitesmoke;
+}

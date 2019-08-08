@@ -1,0 +1,47 @@
+@import '../../../globals.scss';
+nav {
+  background-color: transparent;
+  transition: background-color 1s;
+  border-bottom: .0625rem solid #e5e5e5;
+}
+nav.have-bg .nav-link {
+  font-weight: 600;
+}
+nav.have-bg {
+  background-color: rgba($color: #ffffff, $alpha: 0.5);
+}
+.navbar-nav {
+  flex-basis: 80%;
+}
+.nav-link {
+  color: $base-color !important;
+}
+.bold-line-hover {
+  font-weight: normal;
+  -webkit-text-stroke-width: 0;
+  -webkit-text-stroke-color: transparent;
+}
+.bold-line-hover.active,
+.bold-line-hover:hover {
+  -webkit-text-stroke-width: $hover-stroke;
+  -webkit-text-stroke-color: $hover-color;
+}
+.bold-line-hover:after {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  padding-top: 3px;
+  width: 100%;
+  display: block;
+  content: "";
+  border-bottom: .125rem solid #000;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: all .2s ease-out;
+  transition-property: transform,opacity,font-weight;
+}
+.bold-line-hover.active:after,
+.bold-line-hover:hover:after{
+  transform: scaleX(1);
+  opacity: 1;
+}

@@ -1,0 +1,19 @@
+@import "../../../globals.scss";
+@import url('https://fonts.googleapis.com/css?family=Great+Vibes&display=swap');
+
+.bg-gray{
+    background-color: #e5e5e5;
+}
+
+.brand {
+  font-weight: 600;
+  font-size: 3rem;
+  // font-family: 'Great Vibes', cursive;
+}
+
+a.brand,
+a.brand:active,
+a.brand:hover {
+    text-decoration: none !important;
+    color: $base-color;
+}

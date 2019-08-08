@@ -1,0 +1,41 @@
+@import '../../globals.scss';
+
+.btn-link {
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  height: 3rem;
+  border-radius: 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.0625rem;
+  padding: 0 2rem;
+  border: $border-size solid $base-color;
+  background-color: rgba($color: #fff, $alpha: 0.5);
+  border-radius: $border-radius;
+}
+
+.btn-link,
+.btn-link-content {
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-link-content {
+  width: 100%;
+  display: flex;
+}
+
+.btn-link,
+.btn-link:hover,
+.btn-link:active {
+  text-decoration: none !important;
+  color: $base-color;
+}
+
+.btn-link:active .btn-link-title,
+.btn-link:hover .btn-link-title {
+  -webkit-text-stroke-width: $hover-stroke;
+  -webkit-text-stroke-color: $hover-color;
+}
+
