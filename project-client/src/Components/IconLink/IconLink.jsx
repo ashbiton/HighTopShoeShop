@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import './BtnLink.scss'
+import './IconLink.scss'
 
-class BtnLink extends Component {
+class IconLink extends Component {
     determineLink = () => {
         let { link, relative, path } = this.props;
         if (relative) {
@@ -16,14 +16,11 @@ class BtnLink extends Component {
     render() {
         const { icon } = this.props;
         return (
-            <Link to={this.determineLink()} className={`btn-link ${icon && 'no-outline'}`}>
-                <span className="btn-link-content">
-                    {icon && <i className={`${icon} pr-2`}></i>}
-                    <span className="btn-link-title text-uppercase">{this.props.title}</span>
-                </span>
+            <Link className="icon-link d-inline-flex center-content" to={this.determineLink()}>
+                <i className={icon}></i>
             </Link>
         )
     }
 }
 
-export default BtnLink;
+export default IconLink;

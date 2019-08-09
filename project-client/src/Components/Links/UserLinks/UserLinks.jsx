@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import './UserLinks.scss';
+import IconLink from '../../IconLink/IconLink';
 
 class UserLinks extends Component {
     render() {
         return (
             <div className="row">
                 <div className="col">
-                    <Link className="icon-link d-inline-flex center-content" to="/wishlist">
-                        <i className="fas fa-heart"></i>
-                    </Link>
+                    <IconLink link="/wishlist" icon="fas fa-heart"/>
                 </div>
                 <div className="col px-0">
-                    <Link className="icon-link d-inline-flex center-content" to="/cart">
-                        <i className="fas fa-shopping-cart"></i>
-                    </Link>
+                    <IconLink link="/cart" icon="fas fa-shopping-cart"/>
                 </div>
                 <div className="col">
-                    <Link className="icon-link d-inline-flex center-content" to="/profile">
-                        <i className="fas fa-user-alt"></i>
-                    </Link>
+                    <IconLink link="/profile" icon="fas fa-user-alt"/>
                 </div>
             </div>
         );

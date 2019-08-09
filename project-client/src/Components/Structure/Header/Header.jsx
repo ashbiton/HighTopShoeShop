@@ -10,10 +10,13 @@ class Header extends Component {
         return (
             <header>
                 <div className={`upper-bar d-flex align-items-center justify-content-end py-2 px-4`}>
-                    {isAuthenticated ? 
-                    <UserLinks/> : 
-                    <BtnLink link="/register" title="sign in"/>
-}
+                    <div className="mr-auto">
+                        <BtnLink link="/contact" title="customer service"/>
+                    </div>
+                    {isAuthenticated ?
+                        <UserLinks /> :
+                        <BtnLink link="/register" title="sign in" />
+                    }
                 </div>
             </header>
         )
