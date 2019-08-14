@@ -1,19 +1,19 @@
 const debug = require("debug")("mongo:model-manager");
 const mongo = require("mongoose");
+const { gender , experience } = require('../resources');
 const options = { dicriminatorKey: 'position' };
 
 module.exports = db => {
     const UserModel = db.model("User");
     let schema = new mongo.Schema({
-        gender: { type: String, enum: ['male', 'female'], default: "female" },
+        gender: { type: String, enum: gender.values, default: gender.default },
         salary: { type: Number, required: true, default: 70.00 },
-        email: String,
         phone: String,
         location: String,
         precent: { type: Number, default: 100 },
-        experience: { Type: String, enum: ["1-5 years", "5-10 years", "over 10 years"], default: "1-5 years" },
+        experience: { Type: String, enum: experience.values, default: experience.default },
         active: { type: Boolean, default: true },
-        hiredAt: { type: Date, default: Date.now },
+        hiredAt: { type: Date, default: Date.now() },
     });
 
     schema.statics.CREATE = function (manager) {

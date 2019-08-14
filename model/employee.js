@@ -1,11 +1,12 @@
 const debug = require("debug")("mongo:model-employee");
 const mongo = require("mongoose");
+const { review } = require('../resources')
 const options = { dicriminatorKey: 'position' };
 
 module.exports = db => {
     const ManagerModel = db.model("Manager");
     let schema = new mongo.Schema({
-        review: { type: String, enum: ['perfect', 'sufficient', 'insufficient'], default: "sufficient" },
+        review: { type: String, enum: review.values, default: review.default },
     });
 
     schema.statics.CREATE = function (employee) {

@@ -1,5 +1,6 @@
 const debug = require("debug")("mongo:model-user");
 const mongo = require("mongoose");
+const { positions } = require('../resources');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 module.exports = db => {
@@ -7,8 +8,8 @@ module.exports = db => {
         number: { type: Number, required: true, unique: true, index: true },
         name: { type: String, required: true },
         surname: { type: String, required: true },
-        position: { type: String, required: true },
-        email: String,
+        position: { type: String, required: true, enum: positions.values , default: positions.default},
+        email: { type: String, required: true },
         resetPasswordToken: { type: String, default: "" },
         resetPasswordExpires: Date
     });
@@ -62,6 +63,14 @@ module.exports = db => {
         debug(`request: without callback: ${JSON.stringify(args)}`);
         return this.find(...args).exec();
     };
+
+    schema.statics.usernameDoesNotExits = function (username) {
+        return this.findOne({ username: username }).then(
+            (result) => {
+                if (result) { Promise.reject('username already exists'); }
+            }
+        ).catch(_ => Promise.resolve());
+    }
 
     db.model('User', schema, 'Users');
 }

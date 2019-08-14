@@ -2,7 +2,7 @@ const debug = require("debug")("mongo:model-order");
 const mongo = require("mongoose");
 
 module.exports = db => {
-    let singleItemScheme = new mongo.Schema({
+    let singleItemSchema = new mongo.Schema({
         shoe: { type: mongo.Schema.Types.ObjectId, required: true },
         color: {type:String, required: true},
         size: {type: Number, required: true},
@@ -13,8 +13,8 @@ module.exports = db => {
         number: { type: Number, required: true, unique: true, index: true },
         customer: { type: mongo.Schema.Types.ObjectId, required: true },
         total: { type: Number, required: true },
-        items: [singleItemScheme],
-        createdAt: { type: Date, default: Date.now },
+        items: [singleItemSchema],
+        createdAt: { type: Date, default: Date.now() },
         status: { type: String, enum: ["packging", "shipping", "arrival"] },
         complete: { type: Boolean, default: false }
     });
