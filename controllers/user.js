@@ -6,9 +6,14 @@ validate = (method) => {
     switch (method) {
         case 'createUser': {
             return [
-                body('username').exists().trim().isString()
-                    .matches(/[a-zA-Z0-9_]+/gi)
-                    .isLength({ min: 4, max: 15 })
+                check('password').exists().trim().isString()
+                    .matches(/[A-Z]+/g).withMessage("password must include at least one capital letter")
+                    .matches(/[a-z]+/g).withMessage("password must include at least one small letter")
+                    .matches(/[0-9]+/g).withMessage("password must include at least one number")
+                    .isLength({ min: 8, max: 20 }).withMessage("password must be 8-20 charcter long"),
+                check('username').exists().trim().isString()
+                    .matches(/[a-zA-Z0-9_]+/gi).withMessage("username can only contains numbers, letters and underscore")
+                    .isLength({ min: 4, max: 15 }).withMessage('username must be 4-15 characters long')
                     .custom(val => {
                         return User.findOne({ username: val })
                             .then(result => {
