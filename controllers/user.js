@@ -1,5 +1,5 @@
 const { check, validationResult, body } = require('express-validator');
-const { positions, gender, experience, permissions, review } = require('../resources');
+const { positions, gender, experience, permissions, review } = require('../project-client/src/resources');
 const User = require('../model')('User');
 
 validate = (method) => {

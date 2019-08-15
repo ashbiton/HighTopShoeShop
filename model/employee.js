@@ -1,6 +1,6 @@
 const debug = require("debug")("mongo:model-employee");
 const mongo = require("mongoose");
-const { review } = require('../resources')
+const { review } = require('../project-client/src/resources')
 const options = { dicriminatorKey: 'position' };
 
 module.exports = db => {

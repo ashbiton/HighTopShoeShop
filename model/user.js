@@ -1,6 +1,6 @@
 const debug = require("debug")("mongo:model-user");
 const mongo = require("mongoose");
-const { positions } = require('../resources');
+const { positions } = require('../project-client/src/resources');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 module.exports = db => {

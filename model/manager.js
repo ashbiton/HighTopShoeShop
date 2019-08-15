@@ -1,16 +1,15 @@
 const debug = require("debug")("mongo:model-manager");
 const mongo = require("mongoose");
-const { gender , experience } = require('../resources');
+const { gender, experience, salary, precent } = require('../project-client/src/resources');
 const options = { dicriminatorKey: 'position' };
 
 module.exports = db => {
     const UserModel = db.model("User");
     let schema = new mongo.Schema({
         gender: { type: String, enum: gender.values, default: gender.default },
-        salary: { type: Number, required: true, default: 70.00 },
-        phone: String,
-        location: String,
-        precent: { type: Number, default: 100 },
+        salary: { type: Number, required: true, default: salary.default, min: salary.min },
+        phone: { type: String, required: true },
+        precent: { type: Number, default: precent.default, min: precent.min, max: precent.max },
         experience: { Type: String, enum: experience.values, default: experience.default },
         active: { type: Boolean, default: true },
         hiredAt: { type: Date, default: Date.now() },
