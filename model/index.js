@@ -1,6 +1,8 @@
 const debug = require("debug")("mongo:model");
 const mongo = require("mongoose");
+autoIncrement = require('mongoose-auto-increment');
 let db = mongo.createConnection();
+autoIncrement.initialize(db);
 (async () => {
     try {
         await db.openUri('mongodb://localhost/projectdb');

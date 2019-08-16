@@ -1,15 +1,16 @@
 const debug = require("debug")("mongo:model-user");
 const mongo = require("mongoose");
 const { positions } = require('../project-client/src/resources');
+autoIncrement = require("mongoose-auto-increment");
 const passportLocalMongoose = require('passport-local-mongoose');
 
 module.exports = db => {
     let schema = new mongo.Schema({
-        number: { type: Number, required: true, unique: true, index: true },
         name: { type: String, required: true },
         surname: { type: String, required: true },
         position: { type: String, required: true, enum: positions.values , default: positions.default},
         email: { type: String, required: true },
+        active: { type: Boolean, default: true },
         resetPasswordToken: { type: String, default: "" },
         resetPasswordExpires: Date
     });
@@ -71,6 +72,10 @@ module.exports = db => {
             }
         ).catch(_ => Promise.resolve());
     }
-
+    schema.plugin(autoIncrement.plugin, {
+        model: 'User',
+        startAt: 100,
+        incrementBy:10
+    });
     db.model('User', schema, 'Users');
 }

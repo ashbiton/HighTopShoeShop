@@ -1,17 +1,17 @@
 const debug = require("debug")("mongo:model-order");
 const mongo = require("mongoose");
+autoIncrement = require("mongoose-auto-increment");
 
 module.exports = db => {
     let singleItemSchema = new mongo.Schema({
         shoe: { type: mongo.Schema.Types.ObjectId, required: true },
-        color: {type:String, required: true},
-        size: {type: Number, required: true},
+        color: { type: String, required: true },
+        size: { type: Number, required: true },
         quantity: { type: Number, required: true, default: 1 },
         total: { type: Number, required: true }
     })
     let schema = new mongo.Schema({
-        number: { type: Number, required: true, unique: true, index: true },
-        customer: { type: mongo.Schema.Types.ObjectId, required: true },
+        customer: { type: mongo.Schema.Types.Number, required: true },
         total: { type: Number, required: true },
         items: [singleItemSchema],
         createdAt: { type: Date, default: Date.now() },
@@ -66,6 +66,11 @@ module.exports = db => {
         debug(`request: without callback: ${JSON.stringify(args)}`);
         return this.find(...args).exec();
     };
-
+    schema.plugin(autoIncrement.plugin, {
+        model: 'Order',
+        field: 'number',
+        startAt: 1000,
+        incrementBy: 2
+    });
     db.model('Order', schema, 'Orders');
 }
