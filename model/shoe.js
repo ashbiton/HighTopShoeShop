@@ -3,7 +3,6 @@ const mongo = require("mongoose");
 
 module.exports = db => {
     let schema = new mongo.Schema({
-        id: { type: String, required: true, unique: true, index: true },
         name: { type: String, required: true },
         description: { type: String },
         source: { type: String, required: true },

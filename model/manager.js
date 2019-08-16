@@ -10,7 +10,7 @@ module.exports = db => {
         salary: { type: Number, required: true, default: salary.default, min: salary.min },
         phone: { type: String, required: true },
         precent: { type: Number, default: precent.default, min: precent.min, max: precent.max },
-        experience: { Type: String, enum: experience.values, default: experience.default },
+        experience: { type: String, enum: experience.values, default: experience.default },
         active: { type: Boolean, default: true },
         hiredAt: { type: Date, default: Date.now() },
     });
