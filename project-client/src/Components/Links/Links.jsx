@@ -5,7 +5,7 @@ import EmployeeLinks from './EmployeeLinks';
 
 class Links extends Component {
     render() {
-        const position = "employee";
+        const position = "manager";
         switch (position) {
             case "manager":
                 return <ManagerLinks {...this.props} />

@@ -7,7 +7,6 @@ import ViewUsers from './ViewUsers';
 class UsersRoute extends Component {
     render() {
         const { match } = this.props;
-        console.log("match.url "+match.url);
         return (
             <Switch>
                 <Route exact path={`${match.url}/add`} component={AddUser} />
