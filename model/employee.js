@@ -1,11 +1,17 @@
 const debug = require("debug")("mongo:model-employee");
 const mongo = require("mongoose");
-const { review } = require('../project-client/src/resources')
+const { gender, salary, precent, experience, review } = require('../project-client/src/resources')
 const options = { dicriminatorKey: 'position' };
 
 module.exports = db => {
-    const ManagerModel = db.model("Manager");
+    const UserModel = db.model("User");
     let schema = new mongo.Schema({
+        gender: { type: String, enum: gender.values, default: gender.default },
+        salary: { type: Number, required: true, default: salary.default, min: salary.min },
+        phone: { type: String, required: true },
+        precent: { type: Number, default: precent.default, min: precent.min, max: precent.max },
+        experience: { type: String, enum: experience.values, default: experience.default },
+        hiredAt: { type: Date, default: Date.now() },
         review: { type: String, enum: review.values, default: review.default },
     });
 
@@ -58,5 +64,5 @@ module.exports = db => {
         return this.find(...args).exec();
     };
 
-    ManagerModel.discriminator('Employee', schema, options);
+    UserModel.discriminator('Employee', schema, options);
 }
