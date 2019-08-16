@@ -1,14 +1,18 @@
 import React, { Component, Fragment } from 'react';
-import { gender, positions, experience, review, salary, precent } from '../../resources'
+import { send } from '../../serverUtils';
+import {pick} from "lodash";
 import './ManageUsers.scss';
+import { positions, gender, precent, salary, review, experience } from '../../resources';
 
 class AddUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             position: positions.default,
+            onAwait: false
         }
     }
+
     renderSelect = (dataField, values, defaultValue, required) => {
         return (
             <select data-field={dataField} id={dataField + "Input"} onChange={this.handleChange} className="form-control" required={required} defaultValue={defaultValue}>
@@ -16,6 +20,7 @@ class AddUser extends Component {
             </select>
         );
     }
+
     renderRadio = (dataField, values, defaultValue) => {
         return (
             <Fragment>
@@ -28,9 +33,11 @@ class AddUser extends Component {
         )
 
     }
+
     handleChange = (event) => {
         this.setState({ [event.target.dataset.field]: event.target.value })
     }
+
     renderBasicFields = () => {
         return (
             <Fragment>
@@ -73,6 +80,7 @@ class AddUser extends Component {
                 </div>
             </Fragment>);
     }
+
     renderExtraFields = () => {
         const { position } = this.state;
         const positionFields = positions[position].fields;
@@ -161,10 +169,26 @@ class AddUser extends Component {
             </Fragment>
         );
     }
+
     onFormSubmitted = (event) => {
         event.preventDefault();
-        console.log(this.state);
+        let formData = this.state;
+        const positionFields = positions[formData.position].fields;
+        //remove unnecessary values since we took the form data from the state
+        const fd = pick(formData, positionFields);
+        console.log("fd ",fd);
+        this.setState({ onAwait: true }, async () => {
+            await send('POST', '/user', fd)
+                .then((status , errors) => {
+                    this.setState({ onAwait: false, message: errors });
+                })
+                .catch(_err => {
+                    this.setState({ onAwait: false, message: "unable to add user. please try again in a few seconds." });
+                })
+        });
+
     }
+
     render() {
         return (
             <div className="add-user center-content">
@@ -172,8 +196,7 @@ class AddUser extends Component {
                     <form onSubmit={this.onFormSubmitted}>
                         {this.renderBasicFields()}
                         {this.renderExtraFields()}
-
-                        <button type="submit" onSubmit={this.onFormSubmitted} className="btn btn-primary">Submit</button>
+                        <button disabled={this.state.onAwait} type="submit" className="btn btn-primary">Done</button>
                     </form>
                 </div>
             </div>

@@ -1,18 +1,19 @@
-const { check, validationResult, body } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const { positions, gender, experience, permissions, review } = require('../project-client/src/resources');
 const User = require('../model')('User');
+const _ = require('lodash');
 
 validate = (method) => {
     switch (method) {
         case 'createUser': {
             return [
                 check('password').exists().trim().isString()
-                    .matches(/[A-Z]+/g).withMessage("password must include at least one capital letter")
-                    .matches(/[a-z]+/g).withMessage("password must include at least one small letter")
-                    .matches(/[0-9]+/g).withMessage("password must include at least one number")
+                     .matches(/[A-Z]/).withMessage("password must include at least one capital letter")
+                     .matches(/[a-z]/).withMessage("password must include at least one small letter")
+                     .matches(/[0-9]/).withMessage("password must include at least one number")
                     .isLength({ min: 8, max: 20 }).withMessage("password must be 8-20 charcter long"),
                 check('username').exists().trim().isString()
-                    .matches(/[a-zA-Z0-9_]+/gi).withMessage("username can only contains numbers, letters and underscore")
+                    .matches(/^[a-zA-Z0-9_]+$/).withMessage("username can only contains numbers, letters and underscore")
                     .isLength({ min: 4, max: 15 }).withMessage('username must be 4-15 characters long')
                     .custom(val => {
                         return User.findOne({ username: val })
@@ -62,14 +63,13 @@ createUser = async (req, res, next) => {
             res.status(422).json({ errors: errors.array() });
             return;
         }
-
-        //   const { userName, email, phone, status } = req.body
-
-        const user = await User.create(req.body);
-        res.json(user)
+        const model = require('../model')(_.capitalize(req.body.position));
+        await model.create(req.body);
+        res.status(200).send();
     } catch (err) {
-        return next(err)
+        return res.status(500).json({errors: err});
     }
+    next();
 }
 
 validatePermissionToAction = (req, res, next) => {
