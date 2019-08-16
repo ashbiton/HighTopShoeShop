@@ -6,7 +6,7 @@ import './App.scss';
 function App() {
   return (
     <div className="App">
-      <Router>
+      <Router basename={'/client'}>
         <BodyWrapper />
       </Router>
     </div>

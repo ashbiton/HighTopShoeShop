@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/',express.static(path.join(__dirname, 'project-client', 'build')));
+app.use('/client',express.static(path.join(__dirname, 'project-client', 'build')));
 
 app.use('/user', userRouter);
 
