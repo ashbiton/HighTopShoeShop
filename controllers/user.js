@@ -1,16 +1,18 @@
 const { check, validationResult } = require('express-validator');
 const { positions, gender, experience, permissions, review } = require('../project-client/src/resources');
 const User = require('../model')('User');
+const Customer = require('../model')('Customer');
+var passport = require('passport');
 const _ = require('lodash');
 
 validate = (method) => {
     switch (method) {
-        case 'createUser': {
+        case 'user': {
             return [
                 check('password').exists().trim().isString()
-                     .matches(/[A-Z]/).withMessage("password must include at least one capital letter")
-                     .matches(/[a-z]/).withMessage("password must include at least one small letter")
-                     .matches(/[0-9]/).withMessage("password must include at least one number")
+                    .matches(/[A-Z]/).withMessage("password must include at least one capital letter")
+                    .matches(/[a-z]/).withMessage("password must include at least one small letter")
+                    .matches(/[0-9]/).withMessage("password must include at least one number")
                     .isLength({ min: 8, max: 20 }).withMessage("password must be 8-20 charcter long"),
                 check('username').exists().trim().isString()
                     .matches(/^[a-zA-Z0-9_]+$/).withMessage("username can only contains numbers, letters and underscore")
@@ -20,7 +22,11 @@ validate = (method) => {
                             .then(result => {
                                 if (result) { Promise.reject('username already exists') }
                             }).catch(Promise.resolve(true));
-                    }),
+                    })
+            ];
+        }
+        case 'createUser': {
+            return [
                 check('name', 'name is a required field, should be at least 2 chars long').exists().isString().trim()
                     .isLength({ min: 2 })
                     .isAlpha(),
@@ -63,11 +69,16 @@ createUser = async (req, res, next) => {
             res.status(422).json({ errors: errors.array() });
             return;
         }
-        const model = require('../model')(_.capitalize(req.body.position));
-        await model.create(req.body);
+        let userObj = req.body;
+        const model = require('../model')(_.capitalize(userObj.position));
+        let password = userObj.password;
+        delete userObj.password;
+        let user = await model.create(req.body);
+        await user.setPassword(password);
+        await user.save();
         res.status(200).send();
     } catch (err) {
-        return res.status(500).json({errors: err});
+        return res.status(500).json({ errors: err });
     }
     next();
 }
@@ -85,8 +96,44 @@ validatePermissionToAction = (req, res, next) => {
     }
     next();
 }
+
+signInOrValidateSignUp = async (req, res, next) => {
+    // validate username and password - V
+    // according to user name 
+    // if username exist - validate with passport
+    // else 
+    // validate rest of the data
+    // add user as Customer
+    // log in user
+    await User.usernameDoesNotExits()
+        .then(() => this.validate('createUser'))
+        .catch(() => passport.authenticate('local'));
+}
+
+registerUser = async (req, res, next) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(422).json({ errors: errors.array() });
+            return;
+        }
+        let userObj = req.body;
+        let password = userObj.password;
+        delete userObj.password;
+        let user = await Customer.create(req.body);
+        await user.setPassword(password);
+        await user.save();
+        await req.logIn(user);
+        res.status(200).send();
+    } catch (err) {
+        return res.status(500).json({ errors: err });
+    }
+    next();
+}
 module.exports = {
     validate,
     createUser,
+    registerUser,
+    signInOrValidateSignUp,
     validatePermissionToAction
 }

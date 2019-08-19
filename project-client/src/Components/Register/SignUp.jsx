@@ -12,18 +12,22 @@ class SingUp extends Component {
     handleChange = (event) => {
         this.setState({ [event.target.dataset.field]: event.target.value })
     }
-    onFormSubmitted = () => {
-        this.props.onFormSubmitted();
-        const formData = this.state;
-        send('POST', '/register', formData)
-            .then((status, errors) => {
-                this.props.onAnswerRecieved();
-                this.setState({ message: errors });
-            })
-            .catch(_err => {
-                this.props.onAnswerRecieved();
-                this.setState({ message: _err });
-            })
+    onFormSubmitted = (event) => {
+        event.preventDefault();
+        let formData = this.state;
+        delete formData.message;
+        this.props.onFormSubmitted(async () => {
+            await send('POST', '/register', formData)
+                .then((status, errors) => {
+                    this.props.onAnswerRecieved();
+                    this.setState({ message: errors });
+                })
+                .catch(_err => {
+                    this.props.onAnswerRecieved();
+                    this.setState({ message: _err });
+                })
+        });
+
 
     }
     render() {

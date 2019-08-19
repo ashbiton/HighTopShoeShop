@@ -8,7 +8,7 @@ module.exports = db => {
     let schema = new mongo.Schema({
         name: { type: String, required: true },
         surname: { type: String, required: true },
-        position: { type: String, required: true, enum: positions.values , default: positions.default},
+        position: { type: String, required: true, enum: positions.values, default: positions.default },
         email: { type: String, required: true },
         active: { type: Boolean, default: true },
         resetPasswordToken: { type: String, default: "" },
@@ -69,13 +69,13 @@ module.exports = db => {
         return this.findOne({ username: username }).then(
             (result) => {
                 if (result) { Promise.reject('username already exists'); }
-            }
-        ).catch(_ => Promise.resolve());
+                else { Promise.resolve(); }
+            }).catch(_ => Promise.resolve());
     }
     schema.plugin(autoIncrement.plugin, {
         model: 'User',
         startAt: 100,
-        incrementBy:10
+        incrementBy: 10
     });
     db.model('User', schema, 'Users');
 }

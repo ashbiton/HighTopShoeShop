@@ -9,11 +9,11 @@ class Register extends Component {
             onAwait: false
         }
     }
-    onSignIn = () => {
-        this.setState({ onAwait: true, choosenAction: "sign-in" })
+    onSignIn = (cb) => {
+        this.setState({ onAwait: true, choosenAction: "sign-in" }, cb)
     }
-    onSignUp = () => {
-        this.setState({ onAwait: true, choosenAction: "sign-up" })
+    onSignUp = (cb) => {
+        this.setState({ onAwait: true, choosenAction: "sign-up" }, cb)
 
     }
     onAnswerRecieved = () => {
