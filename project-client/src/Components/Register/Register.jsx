@@ -1,11 +1,40 @@
-import React, { Component, Fragment } from 'react';
-// import "./Register.scss";
+import React, { Component } from 'react';
+import SignIn from './SignIn';
+import SingUp from './SignUp';
+
 class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            onAwait: false
+        }
+    }
+    onSignIn = () => {
+        this.setState({ onAwait: true, choosenAction: "sign-in" })
+    }
+    onSignUp = () => {
+        this.setState({ onAwait: true, choosenAction: "sign-up" })
+
+    }
+    onAnswerRecieved = () => {
+        this.setState({ onAwait: false, choosenAction: "" });
+    }
     render() {
         return (
-            <Fragment>
-                
-            </Fragment>
+            <div className='container w-80'>
+                <dic className="row">
+                    {/* SING UP SIDE */}
+                    <div className="col">
+                        <p className="text-capitalize">SIGN UP</p>
+                        <SingUp onFormSubmitted={this.onSignUp} onAnswerRecieved={this.onAnswerRecieved} cannotSubmit={this.state.onAwait} />
+                    </div>
+                    {/* SIGN IN SIDE */}
+                    <div className="col">
+                        <p className="text-capitalize">SIGN IN</p>
+                        <SignIn onFormSubmitted={this.onSignIn} onAnswerRecieved={this.onAnswerRecieved} cannotSubmit={this.state.onAwait} />
+                    </div>
+                </dic>
+            </div>
         )
     }
 }
