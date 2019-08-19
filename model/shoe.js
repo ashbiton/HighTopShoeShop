@@ -7,7 +7,8 @@ module.exports = db => {
         description: { type: String },
         source: { type: String, required: true },
         price: { type: Number, required: true },
-        color: [String]
+        color: [String],
+        image: { type: String, require: true }
     });
 
     schema.statics.CREATE = function (shoe) {

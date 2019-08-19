@@ -5,6 +5,7 @@ import About from '../../Pages/AboutPage/About';
 import Contact from '../../Pages/Contact/Contact';
 import UsersRoute from '../../ManageUsers/UsersRoute';
 import Register from '../../Register/Register';
+import StockRoute from '../../ManageStock/StockRoute';
 import './MainBody.scss';
 
 class MainBody extends Component {
@@ -19,9 +20,9 @@ class MainBody extends Component {
                     <Route path="/register" component={Register}/>
                     {/* the following should be a private route */}
                     <Route path="/users" component={UsersRoute} />
-                    {/* <PrivateRoute path="/stock" component={Stock}/>
-                <PrivateRoute path="/orders" component={Orders}/>
-                 */}
+                    <Route path="/stock" component={StockRoute}/>
+                {/* <PrivateRoute path="/orders" component={Orders}/> */}
+                
                 </Switch>
             </main>
         )

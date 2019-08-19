@@ -3,7 +3,7 @@ const mongo = require("mongoose");
 
 module.exports = db => {
     let sizeSchema = new mongo.Schema({
-        size: { type: Number, default: 10, min: 2, max: 18 }, // american sizes, only even numbers
+        size: { type: Number, default: 6, min: 4, max: 11 }, // american sizes, includes halfs
         quantity: { type: Number, default: 10 }
     });
     let schema = new mongo.Schema({

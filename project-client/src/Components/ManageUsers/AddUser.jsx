@@ -139,7 +139,7 @@ class AddUser extends Component {
                             <div className="form-group row">
                                 <label htmlFor="reviewInput" className="col-form-label col-sm-6 text-right">Manager review:</label>
                                 <div className="col-sm-6">
-                                    <Select dataField="review" values={review.values} defaultValue={review.default} required={false} handleChange={this.handleChange}/>
+                                    <Select dataField="review" values={review.values} defaultValue={review.default} required={false} handleChange={this.handleChange} />
                                 </div>
                             </div>
                         }
@@ -174,8 +174,8 @@ class AddUser extends Component {
 
     render() {
         return (
-            <div className="add-user center-content">
-                <div className="add-form p-5 m-2 rounded">
+            <div className="w-100 center-content">
+                <div className="floating-div-shadow p-5 m-2 rounded">
                     <form onSubmit={this.onFormSubmitted}>
                         <div className="form-group mb-4">
                             <label htmlFor="positionInput">Please choose the user position:</label>
