@@ -1,8 +1,54 @@
 import React, { Component, Fragment } from 'react';
 import { send } from '../../serverUtils';
-import {pick} from "lodash";
+import { pick } from "lodash";
+import BasicUser from '../Forms/BasicUser';
+import Select from '../Forms/Select';
+import Radio from '../Forms/Radio';
 import './ManageUsers.scss';
-import { positions, gender, precent, salary, review, experience } from '../../resources';
+// import { positions, gender, precent, salary, review, experience } from '../../resources';
+const customerFields = ["name", "surname", "username", "password", "email", "position"];
+const managerFields = [...customerFields, "gender", "salary", "experience", "phone", "precent", "hiredAt", "active"]
+const employeeFields = [...managerFields, "review"];
+const positions = {
+    values: ["manager", "employee", "customer"],
+    default: "customer",
+    customer: {
+        fields: customerFields
+    },
+    manager: {
+        fields: managerFields
+    },
+    employee: {
+        fields: employeeFields
+    }
+
+};
+const gender = {
+    values: ["male", "female"],
+    default: "female"
+};
+
+const experience = {
+    values: ["1-5 years", "5-10 years", "over 10 years"],
+    default: "1-5 years"
+};
+
+const review = {
+    values: ['perfect', 'sufficient', 'insufficient'],
+    default: "sufficient"
+};
+
+const salary = {
+    min: 30,
+    default: 70
+};
+
+const precent = {
+    min: 10,
+    max: 100,
+    default: 100
+};
+
 
 class AddUser extends Component {
     constructor(props) {
@@ -13,73 +59,48 @@ class AddUser extends Component {
         }
     }
 
-    renderSelect = (dataField, values, defaultValue, required) => {
-        return (
-            <select data-field={dataField} id={dataField + "Input"} onChange={this.handleChange} className="form-control" required={required} defaultValue={defaultValue}>
-                {values.map(val => (<option key={val}>{val}</option>))}
-            </select>
-        );
-    }
-
-    renderRadio = (dataField, values, defaultValue) => {
-        return (
-            <Fragment>
-                {values.map((val, index) =>
-                    <div key={index} className="custom-control custom-radio custom-control-inline">
-                        <input onChange={this.handleChange} value={val} data-field={dataField} type="radio" id={`${dataField}-radio-${index}`} name={dataField} className="custom-control-input" defaultChecked={val === defaultValue} />
-                        <label className="custom-control-label" htmlFor={`${dataField}-radio-${index}`}>{val}</label>
-                    </div>)}
-            </Fragment>
-        )
-
-    }
-
     handleChange = (event) => {
         this.setState({ [event.target.dataset.field]: event.target.value })
     }
 
-    renderBasicFields = () => {
-        return (
-            <Fragment>
-                <div className="form-group mb-4">
-                    <label htmlFor="positionInput">Please choose the user position:</label>
-                    {this.renderSelect("position", positions.values, positions.default, true)}
-                </div>
-                <div className="form-group row">
-                    <div className="col-md-6">
-                        <label htmlFor="usernameInput" className="sr-only">Username</label>
-                        <input data-field="username" onChange={this.handleChange} id="usernameInput" placeholder="Username" className="form-control" type="text" pattern="[A-Za-z0-9_]{4,15}" required={true} />
-                    </div>
-                    <div className="col-md-6">
-                        <small className="form-text text-muted">Username must be 4-15 characters long and can include only letters, numbers and underscore.</small>
-                    </div>
-                </div>
-                <div className="form-group row mb-4">
-                    <div className="col-md-6">
-                        <label htmlFor="passwordInput" className="sr-only">Password</label>
-                        <input className="form-control" data-field="password" onChange={this.handleChange} id="passwordInput" placeholder="Password" type="password" pattern="[A-Za-z0-9]{8,20}" required={true} />
-                    </div>
-                    <div className="col-md-6">
-                        <small className="form-text text-muted">Password must be 8-20 characters long and include a capital letter, a small letter and a number.</small>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label htmlFor="nameInput" className="sr-only">Name</label>
-                        <input data-field="name" onChange={this.handleChange} id="nameInput" className="form-control text-capitalize" type="text" pattern="[A-Za-z]{2,}" placeholder="Given Name" required={true} />
-                    </div>
+    // renderBasicFields = () => {
+    //     return (
+    //         <Fragment>
+    //             <div className="form-group row">
+    //                 <div className="col-md-6">
+    //                     <label htmlFor="usernameInput" className="sr-only">Username</label>
+    //                     <input data-field="username" onChange={this.handleChange} id="usernameInput" placeholder="Username" className="form-control" type="text" pattern="[A-Za-z0-9_]{4,15}" required={true} />
+    //                 </div>
+    //                 <div className="col-md-6">
+    //                     <small className="form-text text-muted">Username must be 4-15 characters long and can include only letters, numbers and underscore.</small>
+    //                 </div>
+    //             </div>
+    //             <div className="form-group row mb-4">
+    //                 <div className="col-md-6">
+    //                     <label htmlFor="passwordInput" className="sr-only">Password</label>
+    //                     <input className="form-control" data-field="password" onChange={this.handleChange} id="passwordInput" placeholder="Password" type="password" pattern="[A-Za-z0-9]{8,20}" required={true} />
+    //                 </div>
+    //                 <div className="col-md-6">
+    //                     <small className="form-text text-muted">Password must be 8-20 characters long and include a capital letter, a small letter and a number.</small>
+    //                 </div>
+    //             </div>
+    //             <div className="form-row">
+    //                 <div className="form-group col-md-6">
+    //                     <label htmlFor="nameInput" className="sr-only">Name</label>
+    //                     <input data-field="name" onChange={this.handleChange} id="nameInput" className="form-control text-capitalize" type="text" pattern="[A-Za-z]{2,}" placeholder="Given Name" required={true} />
+    //                 </div>
 
-                    <div className="form-group col-md-6 ">
-                        <label htmlFor="surnameInput" className="sr-only">Surname</label>
-                        <input data-field="surname" onChange={this.handleChange} id="surnameInput" className="form-control text-capitalize" type="text" pattern="[A-Za-z]{2,}" placeholder="Surname" required={true} />
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="emailInput" className="sr-only">Email</label>
-                    <input data-field="email" onChange={this.handleChange} id="emailInput" className="form-control" type="email" placeholder="Enter your email    e.g. example@gmail.com" required={true} />
-                </div>
-            </Fragment>);
-    }
+    //                 <div className="form-group col-md-6 ">
+    //                     <label htmlFor="surnameInput" className="sr-only">Surname</label>
+    //                     <input data-field="surname" onChange={this.handleChange} id="surnameInput" className="form-control text-capitalize" type="text" pattern="[A-Za-z]{2,}" placeholder="Surname" required={true} />
+    //                 </div>
+    //             </div>
+    //             <div className="form-group">
+    //                 <label htmlFor="emailInput" className="sr-only">Email</label>
+    //                 <input data-field="email" onChange={this.handleChange} id="emailInput" className="form-control" type="email" placeholder="Enter your email    e.g. example@gmail.com" required={true} />
+    //             </div>
+    //         </Fragment>);
+    // }
 
     renderExtraFields = () => {
         const { position } = this.state;
@@ -110,7 +131,8 @@ class AddUser extends Component {
                             <div className="form-group row">
                                 <label htmlFor="genderInput" className="col-form-label col-sm-6 text-right">Gender:</label>
                                 <div className="col-sm-6 d-flex align-items-center">
-                                    {this.renderRadio("gender", gender.values, gender.default)}
+                                    {/* {this.renderRadio("gender", gender.values, gender.default)} */}
+                                    <Radio dataField="gender" values={gender.values} defaultValue={gender.default} handleChange={this.handleChange} />
                                 </div>
                             </div>
                         }
@@ -145,7 +167,7 @@ class AddUser extends Component {
                             <div className="form-group row">
                                 <label htmlFor="experienceInput" className="col-form-label col-sm-6 text-right">Experience level:</label>
                                 <div className="col-sm-6">
-                                    {this.renderSelect("experience", experience.values, experience.default, false)}
+                                    <Select dataField="experience" values={experience.values} defaultValue={experience.default} required={false} handleChange={this.handleChange} />
                                 </div>
                             </div>
                         }
@@ -156,7 +178,7 @@ class AddUser extends Component {
                             <div className="form-group row">
                                 <label htmlFor="reviewInput" className="col-form-label col-sm-6 text-right">Manager review:</label>
                                 <div className="col-sm-6">
-                                    {this.renderSelect("review", review.values, review.default, false)}
+                                    <Select dataField="review" values={review.values} defaultValue={review.default} required={false} handleChange={this.handleChange}/>
                                 </div>
                             </div>
                         }
@@ -176,10 +198,10 @@ class AddUser extends Component {
         const positionFields = positions[formData.position].fields;
         //remove unnecessary values since we took the form data from the state
         const fd = pick(formData, positionFields);
-        console.log("fd ",fd);
+        console.log("fd ", fd);
         this.setState({ onAwait: true }, async () => {
             await send('POST', '/user', fd)
-                .then((status , errors) => {
+                .then((status, errors) => {
                     this.setState({ onAwait: false, message: errors });
                 })
                 .catch(_err => {
@@ -194,7 +216,11 @@ class AddUser extends Component {
             <div className="add-user center-content">
                 <div className="add-form p-5 m-2 rounded">
                     <form onSubmit={this.onFormSubmitted}>
-                        {this.renderBasicFields()}
+                        <div className="form-group mb-4">
+                            <label htmlFor="positionInput">Please choose the user position:</label>
+                            <Select dataField="position" values={positions.values} defaultValue={positions.default} required={true} handleChange={this.handleChange} ></Select>
+                        </div>
+                        <BasicUser handleChange={this.handleChange} />
                         {this.renderExtraFields()}
                         <button disabled={this.state.onAwait} type="submit" className="btn btn-primary">Done</button>
                     </form>
