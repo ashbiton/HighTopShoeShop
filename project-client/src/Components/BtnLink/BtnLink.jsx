@@ -16,10 +16,10 @@ class BtnLink extends Component {
     render() {
         const { icon } = this.props;
         return (
-            <Link to={this.determineLink()} className={`btn-link ${icon && 'no-outline'}`}>
-                <span className="btn-link-content">
+            <Link to={this.determineLink()} className={`custom-btn-link ${icon && 'no-outline'}`}>
+                <span className="custom-btn-link-content">
                     {icon && <i className={`${icon} pr-2`}></i>}
-                    <span className="btn-link-title text-uppercase">{this.props.title}</span>
+                    <span className="custom-btn-link-title text-uppercase">{this.props.title}</span>
                 </span>
             </Link>
         )
