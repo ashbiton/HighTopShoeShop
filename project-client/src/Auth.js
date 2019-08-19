@@ -1,5 +1,5 @@
 let auth = {
-    isAuthenticated : true
+    isAuthenticated : false
 }
 
 module.exports = auth;
