@@ -16,7 +16,7 @@ class SignIn extends Component {
         let formData = this.state;
         delete formData.message;
         this.props.onFormSubmitted(async () => {
-            await send('POST', '/register', formData)
+            await send('POST', '/signin', formData)
                 .then((status, errors) => {
                     this.props.onAnswerRecieved();
                     this.setState({ message: errors });

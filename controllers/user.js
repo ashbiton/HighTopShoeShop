@@ -97,19 +97,6 @@ validatePermissionToAction = (req, res, next) => {
     next();
 }
 
-signInOrValidateSignUp = async (req, res, next) => {
-    // validate username and password - V
-    // according to user name 
-    // if username exist - validate with passport
-    // else 
-    // validate rest of the data
-    // add user as Customer
-    // log in user
-    await User.usernameDoesNotExits()
-        .then(() => this.validate('createUser'))
-        .catch(() => passport.authenticate('local'));
-}
-
 registerUser = async (req, res, next) => {
     try {
         const errors = validationResult(req);
@@ -123,7 +110,8 @@ registerUser = async (req, res, next) => {
         let user = await Customer.create(req.body);
         await user.setPassword(password);
         await user.save();
-        await req.logIn(user);
+        const { err } = await user.authenticate(password);
+        if (err) { throw new Error(err); }
         res.status(200).send();
     } catch (err) {
         return res.status(500).json({ errors: err });
@@ -134,6 +122,5 @@ module.exports = {
     validate,
     createUser,
     registerUser,
-    signInOrValidateSignUp,
     validatePermissionToAction
 }
