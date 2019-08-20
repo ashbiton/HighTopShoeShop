@@ -5,7 +5,7 @@ let db = mongo.createConnection();
 autoIncrement.initialize(db);
 (async () => {
     try {
-        await db.openUri('mongodb://localhost/projectdb');
+        await db.openUri('mongodb://localhost/projectdb',{ useNewUrlParser: true , useFindAndModify: false });
     } catch (err) {
         debug("Error connecting to DB: " + err);
     }

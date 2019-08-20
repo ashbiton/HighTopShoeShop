@@ -4,8 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 var userRouter = require('./routes/user');
-var registerRouter = require('./routes/register');
+var signInRouter = require('./routes/signin');
+var signUpRouter = require('./routes/signup');
 
 var app = express();
 
@@ -20,8 +24,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/client',express.static(path.join(__dirname, 'project-client', 'build')));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+var User = require('./model')("User");
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 app.use('/user', userRouter);
-app.use('/register',registerRouter)
+app.use('/signin',signInRouter);
+app.use('/signup',signUpRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
