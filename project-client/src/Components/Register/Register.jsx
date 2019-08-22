@@ -22,7 +22,7 @@ class Register extends Component {
     render() {
         return (
             <div className='container w-80'>
-                <dic className="row">
+                <div className="row">
                     {/* SING UP SIDE */}
                     <div className="col">
                         <p className="text-capitalize">SIGN UP</p>
@@ -33,7 +33,7 @@ class Register extends Component {
                         <p className="text-capitalize">SIGN IN</p>
                         <SignIn onFormSubmitted={this.onSignIn} onAnswerRecieved={this.onAnswerRecieved} cannotSubmit={this.state.onAwait} />
                     </div>
-                </dic>
+                </div>
             </div>
         )
     }

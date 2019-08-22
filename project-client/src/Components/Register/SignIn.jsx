@@ -30,16 +30,16 @@ class SignIn extends Component {
     render() {
         return (
             <form onSubmit={this.onFormSubmitted}>
-                <div class="form-group">
+                <div className="form-group">
                     <label htmlFor="usernameInput" className="sr-only">Username</label>
                     <input onChange={this.handleChange} data-field="username" id="usernameInput" placeholder="Username" className="form-control" type="text" pattern="[A-Za-z0-9_]{4,15}" required={true} />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label htmlFor="passwordInput" className="sr-only">Password</label>
                     <input onChange={this.handleChange} className="form-control" data-field="password" id="passwordInput" placeholder="Password" type="password" pattern="[A-Za-z0-9]{8,20}" required={true} />
                 </div>
                 <button disabled={this.props.cannotSubmit} type="submit" className="btn btn-primary">Done</button>
-                <button type="button" class="btn btn-link text-uppercase" data-toggle="modal" data-target="#forgotPasswordModal"><small>FORGOT password</small></button>
+                <button type="button" className="btn btn-link text-uppercase" data-toggle="modal" data-target="#forgotPasswordModal"><small>FORGOT password</small></button>
             </form>
         );
     }
