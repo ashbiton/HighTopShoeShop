@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { send } from '../../serverUtils';
+import { withRouter } from 'react-router-dom';
 
 class SignIn extends Component {
     constructor(props) {
@@ -18,8 +19,14 @@ class SignIn extends Component {
         this.props.onFormSubmitted(async () => {
             await send('POST', '/signin', formData)
                 .then((status, errors) => {
-                    this.props.onAnswerRecieved();
-                    this.setState({ message: errors });
+                    if (status === 200) {
+                        // go back to the root and reload the page
+                        this.props.history.push('/');
+                        window.location.reload();
+                    } else {
+                        this.props.onAnswerRecieved();
+                        this.setState({ message: errors });
+                    }
                 })
                 .catch(_err => {
                     this.props.onAnswerRecieved();
@@ -45,4 +52,4 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn;
+export default withRouter(SignIn);
