@@ -8,6 +8,7 @@ router.post('/',
         req.body.position = "customer";
         next();
     },
+    userController.decryptPassword,
     userController.validate('createUser'),
     userController.registerUser,
 );

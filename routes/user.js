@@ -9,6 +9,7 @@ router.get('/:id', async function (req, res, next) {
 /* add a new user */
 router.post('/',
   userController.validatePermissionToAction,
+  userController.decryptPassword,
   userController.validate('user'),
   userController.validate('createUser'),
   userController.validate('createUserOptional'),

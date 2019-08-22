@@ -1,4 +1,7 @@
 const _ = require('lodash');
+const NodeRSA = require('node-rsa');
+const { publicKeyStr } = require('../src/publicKey.json');
+
 function handleJSONResponse(json) {
     let body = json;
     const errors = json.errors;
@@ -28,10 +31,24 @@ function handleResponse(res) {
     })
 }
 
+function encryptPassword(body) {
+    if (body.password) {
+        try {
+            const publicKey = new NodeRSA(publicKeyStr, 'public');
+            const password = body.password;
+            const encryptedPassword = publicKey.encrypt(password, 'base64');
+            body.password = encryptedPassword;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+}
+
 function send(method, url, body) {
     // allowed methods: PUT, DELETE, POST
     // body is expected to be a json object
-    console.log(method, url, body, typeof (body));
+    encryptPassword(body);
+    console.log(method, url, body);
     return new Promise(function (resolve, _reject) {
         fetch(url,
             {

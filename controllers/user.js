@@ -3,6 +3,9 @@ const { positions, gender, experience, permissions, review } = require('../proje
 const User = require('../model')('User');
 const Customer = require('../model')('Customer');
 var passport = require('passport');
+const NodeRSA = require('node-rsa');
+const fs = require('fs-extra');
+const path = require('path');
 const _ = require('lodash');
 
 validate = (method) => {
@@ -78,21 +81,18 @@ createUser = async (req, res, next) => {
         await user.save();
         res.status(200).send();
     } catch (err) {
-        return res.status(500).json({ errors: err });
+        res.status(500).json({ errors: err });
     }
-    next();
 }
 
 validatePermissionToAction = (req, res, next) => {
     const user = req.user;
     if (!user) {
         res.status(401).send();
-        return;
     }
     const position = user.position;
     if (!position || !permissions.user.includes(position)) {
         res.status(401).send();
-        return;
     }
     next();
 }
@@ -102,7 +102,6 @@ registerUser = async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(422).json({ errors: errors.array() });
-            return;
         }
         let userObj = req.body;
         let password = userObj.password;
@@ -114,13 +113,29 @@ registerUser = async (req, res, next) => {
         if (err) { throw new Error(err); }
         res.status(200).send();
     } catch (err) {
-        return res.status(500).json({ errors: err });
+        res.status(500).json({ errors: err });
+    }
+}
+
+decryptPassword = async (req, res, next) => {
+    if (req.body.password) {
+        try {
+            let privateKeyStr = await fs.readFile(path.join(__dirname, 'privateKey.txt'));
+            const privateKey = new NodeRSA(privateKeyStr, 'private');
+            const decryptedPassword = privateKey.decrypt(req.body.password, 'utf8');
+            req.body.password = decryptedPassword;
+        } catch (error) {
+            res.status(400).send({ errors: error });
+        }
     }
     next();
 }
+
+
 module.exports = {
     validate,
     createUser,
     registerUser,
-    validatePermissionToAction
+    validatePermissionToAction,
+    decryptPassword
 }
