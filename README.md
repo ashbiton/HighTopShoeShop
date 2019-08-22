@@ -8,20 +8,19 @@ Running this project locally without a data base will not break the project but 
 
 
 ## Installation
-### running the project locally
 ```
 git clone
 cd .\project-client\
 npm install
-run build
 cd ..
 npm install
-npm start
 ```
+### running the project locally
+1. open 2 cmd
+2. in the first one navigate to the project directory
+3. in the second one navigate to project-client in the project directory
+4. run `npm start` in both cmd
 
-### creating a data base
-You can run the following command: 
-```
-node mongo.js
-```
-to create a new DB for the project locally in your computer and fill it using the manager credentials in the website itself.
+**note** <br>
+the server runs on port 5000 <br>
+the client runs on port 3000
