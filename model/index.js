@@ -18,4 +18,8 @@ require("./customer")(db);
 require("./manager")(db);
 require("./employee")(db);
 require('./item')(db);
+require('./message')(db);
+require('./like')(db);
+require('./post')(db);
+require('./group')(db);
 module.exports = model => db.model(model);	
