@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { sizes, quentity, colors } from '../../shoe-resources';
 import { split, toNumber } from 'lodash';
+import { send } from '../../serverUtils';
 import './ManageStock.scss';
 
 class AddEditItem extends Component {
@@ -73,7 +74,7 @@ class AddEditItem extends Component {
             console.log("key", key, "value", value);
         });
         const method = 'POST'; //could be changed to PUT if on edit mode
-        this.setState({onAwait: true}, async () => {
+        this.setState({ onAwait: true }, async () => {
             await send(method, '/shoes', fd)
                 .then((status, errors) => {
                     this.setState({ onAwait: false, message: errors });
