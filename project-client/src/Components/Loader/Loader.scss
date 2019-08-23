@@ -1,0 +1,48 @@
+$bg-color: #e0d3d3db;
+.whole-page {
+  width: 100vw;
+  height: 100vh;
+//   animation: 3000ms ease-in-out infinite pulse-bg;
+  @keyframes pulse-bg {
+    0% {
+      background: darken($color: $bg-color, $amount: 10%);
+    }
+    30% {
+      background: $bg-color;
+    }
+    60% {
+      background: darken($color: $bg-color, $amount: 10%);
+    }
+    80% {
+      background: $bg-color;
+    }
+    100% {
+      background: darken($color: $bg-color, $amount: 10%);
+    }
+  }
+}
+.img-container {
+  animation: 3000ms ease-in-out infinite pulse-img;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes pulse-img {
+    0% {
+      transform: scale(1);
+    }
+    30% {
+      transform: scale(1.2);
+    }
+    60% {
+      transform: scale(1);
+    }
+    80% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}

@@ -22,7 +22,7 @@ function handleResponse(res) {
         res.json()
             .then(json => {
                 const body = handleJSONResponse(json);
-                resolve(status, body);
+                resolve([status, body]);
             })
             .catch(err => {
                 // there is no json body
@@ -68,6 +68,27 @@ function send(method, url, body) {
     })
 }
 
+function get(url) {
+    return new Promise(function (resolve, reject) {
+        fetch(url,
+            {
+                method: 'GET'
+            })
+            .then(handleResponse)
+            .then(([status, body]) => {
+                if (status === 200){
+                    resolve(body);
+                }else {
+                    reject(status,body);
+                }
+            })
+            .catch((err) => {
+                reject(503, "(Error Code 503): Unable to complete your send, please try again later. " + err);
+            })
+    })
+}
+
 module.exports = {
-    send
+    send,
+    get
 }
